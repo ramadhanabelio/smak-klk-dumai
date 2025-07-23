@@ -1,0 +1,8 @@
+.form-control,
+.btn {
+    border-radius: 0 !important;
+}
+
+.card-header img {
+    object-fit: contain;
+}
