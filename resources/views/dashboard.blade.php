@@ -104,7 +104,7 @@
                                     Karyawan
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                    60
+                                    {{ $totalEmployees }}
                                 </div>
                             </div>
                             <div class="col-auto">
@@ -121,14 +121,54 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
-                                    Departemen
+                                    Perusahaan
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                    60
+                                    {{ $totalCompanies }}
                                 </div>
                             </div>
                             <div class="col-auto">
-                                <i class="fas fa-clone fa-2x text-gray-300"></i>
+                                <i class="fas fa-building fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-bottom-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
+                                    Departemen
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    {{ $totalDepartments }}
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-sitemap fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-bottom-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
+                                    Divisi
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                    {{ $totalDivisions }}
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-project-diagram fa-2x text-gray-300"></i>
                             </div>
                         </div>
                     </div>

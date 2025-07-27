@@ -35,8 +35,8 @@
             <hr class="sidebar-divider my-0 mt-4" />
 
             {{-- Nav Item - Dashboard --}}
-            <li class="nav-item">
-                <a class="nav-link" href="">
+            <li class="nav-item {{ Request::is('dashboard') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('dashboard') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </a>
@@ -70,17 +70,31 @@
             {{-- Heading --}}
             <div class="sidebar-heading">Master Data</div>
 
-            <li class="nav-item">
-                <a class="nav-link" href="">
+            <li class="nav-item {{ request()->routeIs('employees.*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('employees.index') }}">
                     <i class="fas fa-fw fa-users"></i>
                     <span>Karyawan</span>
                 </a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link" href="">
-                    <i class="fas fa-fw fa-clone"></i>
+            <li class="nav-item {{ request()->routeIs('companies.*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('companies.index') }}">
+                    <i class="fas fa-fw fa-building"></i>
+                    <span>Perusahaan</span>
+                </a>
+            </li>
+
+            <li class="nav-item {{ request()->routeIs('departments.*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('departments.index') }}">
+                    <i class="fas fa-fw fa-sitemap"></i>
                     <span>Departemen</span>
+                </a>
+            </li>
+
+            <li class="nav-item {{ request()->routeIs('divisions.*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('divisions.index') }}">
+                    <i class="fas fa-fw fa-project-diagram"></i>
+                    <span>Divisi</span>
                 </a>
             </li>
 
