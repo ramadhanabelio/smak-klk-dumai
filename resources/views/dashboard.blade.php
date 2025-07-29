@@ -24,7 +24,7 @@
                                     Surat Masuk
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                    60
+                                    {{ $totalIncomingLetters }}
                                 </div>
                             </div>
                             <div class="col-auto">
@@ -44,7 +44,7 @@
                                     Surat Keluar
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                    60
+                                    {{ $totalOutgoingLetters }}
                                 </div>
                             </div>
                             <div class="col-auto">
@@ -64,7 +64,7 @@
                                     Booking Surat
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                    60
+                                    {{ $totalBookingLetters }}
                                 </div>
                             </div>
                             <div class="col-auto">
@@ -84,7 +84,7 @@
                                     Laporan
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                    60
+                                    {{ $totalLetters }}
                                 </div>
                             </div>
                             <div class="col-auto">

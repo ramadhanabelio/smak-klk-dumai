@@ -57,7 +57,7 @@
                 </a>
                 <div id="collapseSurat" class="collapse" aria-labelledby="headingSurat" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="">Surat Masuk</a>
+                        <a class="collapse-item" href="{{ route('letters.incoming.index') }}">Surat Masuk</a>
                         <a class="collapse-item" href="{{ route('letters.outgoing.index') }}">Surat Keluar</a>
                         <a class="collapse-item" href="">Booking Surat</a>
                     </div>
