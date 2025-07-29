@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Division;
 use App\Models\Employee;
 use App\Models\Department;
 use Illuminate\Http\Request;
@@ -19,14 +20,14 @@ class EmployeeController extends Controller
 
     public function create()
     {
-        $departments = Department::all();
-        return view('employees.create', compact('departments'));
+        $divisions = Division::with('department')->get();
+        return view('employees.create', compact('divisions'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'department_id'     => 'required|exists:departments,id',
+            'division_id'       => 'required|exists:divisions,id',
             'name'              => 'required|string|max:255',
             'email'             => 'required|email|unique:users,email',
             'password'          => 'required|confirmed|min:6',
@@ -48,7 +49,7 @@ class EmployeeController extends Controller
 
         Employee::create([
             'user_id'          => $user->id,
-            'department_id'    => $request->department_id,
+            'division_id' => $request->division_id,
             'employee_number'  => $employeeNumber,
             'name'             => $request->name,
             'phone_number'     => $request->phone_number,
@@ -61,14 +62,14 @@ class EmployeeController extends Controller
 
     public function edit(Employee $employee)
     {
-        $departments = Department::all();
-        return view('employees.edit', compact('employee', 'departments'));
+        $divisions = Division::with('department')->get();
+        return view('employees.edit', compact('employee', 'divisions'));
     }
 
     public function update(Request $request, Employee $employee)
     {
         $request->validate([
-            'department_id'     => 'required|exists:departments,id',
+            'division_id'       => 'required|exists:divisions,id',
             'name'              => 'required|string|max:255',
             'email'             => 'required|email|unique:users,email,' . $employee->user_id,
             'password'          => 'nullable|confirmed|min:6',
@@ -86,7 +87,7 @@ class EmployeeController extends Controller
         ]);
 
         $employee->update([
-            'department_id'   => $request->department_id,
+            'division_id' => $request->division_id,
             'name'            => $request->name,
             'phone_number'    => $request->phone_number,
             'place_of_birth'  => $request->place_of_birth,

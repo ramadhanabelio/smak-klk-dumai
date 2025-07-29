@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Models\Division;
 use App\Models\Department;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,7 +11,7 @@ class Employee extends Model
 {
     protected $fillable = [
         'user_id',
-        'department_id',
+        'division_id',
         'employee_number',
         'name',
         'phone_number',
@@ -23,8 +24,20 @@ class Employee extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function division()
+    {
+        return $this->belongsTo(Division::class);
+    }
+
     public function department()
     {
-        return $this->belongsTo(Department::class);
+        return $this->hasOneThrough(
+            Department::class,
+            Division::class,
+            'id',
+            'id',
+            'division_id',
+            'department_id'
+        );
     }
 }

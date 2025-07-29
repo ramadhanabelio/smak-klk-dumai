@@ -51,13 +51,13 @@
 </div>
 
 <div class="form-group">
-    <label for="department_id">Departemen</label>
-    <select name="department_id" class="form-control" required>
-        <option value="">Pilih Departemen</option>
-        @foreach ($departments as $dept)
-            <option value="{{ $dept->id }}"
-                {{ old('department_id', $employee->department_id ?? '') == $dept->id ? 'selected' : '' }}>
-                {{ $dept->name }}
+    <label for="division_id">Divisi</label>
+    <select name="division_id" class="form-control" required>
+        <option value="">Pilih Divisi</option>
+        @foreach ($divisions as $div)
+            <option value="{{ $div->id }}"
+                {{ old('division_id', $employee->division_id ?? '') == $div->id ? 'selected' : '' }}>
+                {{ $div->name }} - ({{ $div->department->name ?? '-' }})
             </option>
         @endforeach
     </select>

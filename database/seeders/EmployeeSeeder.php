@@ -3,9 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use App\Models\Company;
+use App\Models\Division;
 use App\Models\Employee;
-use App\Models\Department;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -34,13 +33,13 @@ class EmployeeSeeder extends Seeder
             'password' => bcrypt('password'),
         ]);
 
-        $it = Department::where('code', 'IT')->first();
-        $hrd = Department::where('code', 'HRD')->first();
-        $fnc = Department::where('code', 'FNC')->first();
+        $itDivision = Division::where('code', 'IT-A')->first();
+        $hrdDivision = Division::where('code', 'HRD-A')->first();
+        $fncDivision = Division::where('code', 'FNC-A')->first();
 
         Employee::create([
             'user_id' => $user1->id,
-            'department_id' => $it->id,
+            'division_id' => $itDivision->id,
             'employee_number' => 'EMP001',
             'name' => 'Rizki Saputra',
             'phone_number' => '081234567891',
@@ -50,7 +49,7 @@ class EmployeeSeeder extends Seeder
 
         Employee::create([
             'user_id' => $user2->id,
-            'department_id' => $hrd->id,
+            'division_id' => $hrdDivision->id,
             'employee_number' => 'EMP002',
             'name' => 'Siti Rahmawati',
             'phone_number' => '081234567892',
@@ -60,7 +59,7 @@ class EmployeeSeeder extends Seeder
 
         Employee::create([
             'user_id' => $user3->id,
-            'department_id' => $fnc->id,
+            'division_id' => $fncDivision->id,
             'employee_number' => 'EMP003',
             'name' => 'Dian Firmansyah',
             'phone_number' => '081234567893',

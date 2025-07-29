@@ -2021,6 +2021,44 @@ select.form-control:focus::-ms-value {
     background-color: #fff;
 }
 
+.select2-container--bootstrap4 .select2-selection--single {
+    display: block;
+    width: 100%;
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #6e707e;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #d1d3e2;
+    border-radius: 0.35rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.select2-container--bootstrap4 .select2-selection--single:focus,
+.select2-container--bootstrap4.select2-container--focus
+    .select2-selection--single {
+    color: #6e707e;
+    background-color: #fff;
+    border-color: #bac8f3;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+}
+
+.select2-container--bootstrap4 .select2-selection__rendered {
+    color: #6e707e;
+    line-height: 1.5;
+}
+
+.select2-container--bootstrap4 .select2-selection__arrow {
+    top: 50%;
+    right: 0.75rem;
+    transform: translateY(-50%);
+    height: auto;
+}
+
 .form-control-file,
 .form-control-range {
     display: block;

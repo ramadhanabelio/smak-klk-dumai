@@ -17,6 +17,10 @@
     {{-- Custom styles for this template --}}
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css"
+        rel="stylesheet" />
+
 </head>
 
 <body id="page-top">
@@ -54,7 +58,7 @@
                 <div id="collapseSurat" class="collapse" aria-labelledby="headingSurat" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="">Surat Masuk</a>
-                        <a class="collapse-item" href="">Surat Keluar</a>
+                        <a class="collapse-item" href="{{ route('letters.outgoing.index') }}">Surat Keluar</a>
                         <a class="collapse-item" href="">Booking Surat</a>
                     </div>
                 </div>
@@ -211,6 +215,8 @@
     <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
     {{-- Page level custom scripts --}}
     <script src="{{ asset('js/demo/datatables-demo.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    @yield('scripts')
 </body>
 
 </html>
