@@ -67,3 +67,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('departments', DepartmentController::class);
     Route::resource('divisions', DivisionController::class);
 });
+
+Route::get('/tes-bot', function () {
+    \App\Services\Telegram::sendMessage("Bot Telegram SMaK KLK Dumai aktif");
+    return 'Bot Telegram SMaK KLK Dumai aktif!';
+});
