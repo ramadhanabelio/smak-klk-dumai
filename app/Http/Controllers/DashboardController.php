@@ -17,7 +17,7 @@ class DashboardController extends Controller
         $totalCompanies     = Company::count();
         $totalDepartments   = Department::count();
         $totalDivisions     = Division::count();
-        $totalLetters       = Letter::count();
+        $totalLetters = Letter::whereIn('status', ['incoming', 'outgoing'])->count();
 
         $totalIncomingLetters = Letter::where('status', 'incoming')->count();
         $totalOutgoingLetters = Letter::where('status', 'outgoing')->count();

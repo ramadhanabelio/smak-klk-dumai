@@ -64,8 +64,8 @@
                 </div>
             </li>
 
-            <li class="nav-item mb-2">
-                <a class="nav-link" href="">
+            <li class="nav-item {{ request()->routeIs('reports.*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('reports.index') }}">
                     <i class="fas fa-fw fa-file-alt"></i>
                     <span>Laporan</span>
                 </a>

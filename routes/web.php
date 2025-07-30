@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LetterController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DivisionController;
@@ -57,6 +58,9 @@ Route::middleware(['auth'])->group(function () {
         ->group(function () {
             Route::get('/', 'bookingIndex')->name('index');
         });
+
+    Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::get('reports/download', [ReportController::class, 'download'])->name('reports.download');
 
     Route::resource('employees', EmployeeController::class);
     Route::resource('companies', CompanyController::class);
