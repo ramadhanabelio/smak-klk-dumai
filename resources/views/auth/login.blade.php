@@ -21,7 +21,7 @@
     data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": true}'>
 
     <div style="position: absolute; top: 20px; right: 20px; z-index: 1000;">
-        <a href="#" class="btn btn-outline-dark">Booking Surat</a>
+        <a href="{{ route('bookings.step.one') }}" class="btn btn-outline-dark">Booking Surat</a>
     </div>
 
     <div class="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5">

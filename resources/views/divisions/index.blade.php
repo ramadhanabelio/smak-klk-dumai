@@ -6,7 +6,7 @@
     <div class="container-fluid">
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800 font-weight-bold">Divisi</h1>
-            <a href="{{ route('divisions.create') }}" class="btn btn-success mb-3">Tambah Divisi</a>
+            <a href="{{ route('divisions.create') }}" class="btn btn-success">Tambah Divisi</a>
         </div>
 
         @if (session('success'))

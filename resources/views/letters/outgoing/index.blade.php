@@ -6,7 +6,7 @@
     <div class="container-fluid">
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800 font-weight-bold">Surat Keluar</h1>
-            <a href="{{ route('letters.outgoing.create') }}" class="btn btn-success mb-3">Tambah Surat Keluar</a>
+            <a href="{{ route('letters.outgoing.create') }}" class="btn btn-success">Tambah Surat Keluar</a>
         </div>
 
         @if (session('success'))

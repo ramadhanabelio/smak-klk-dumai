@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LetterController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\EmployeeController;
@@ -16,6 +17,16 @@ Route::get('/', function () {
 Route::get('login', [AuthController::class, 'index'])->name('login');
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::prefix('bookings')->name('bookings.')->group(function () {
+    Route::get('/', [BookingController::class, 'stepOne'])->name('step.one');
+    Route::post('/', [BookingController::class, 'handleStepOne'])->name('handle.step.one');
+
+    Route::get('/details', [BookingController::class, 'stepTwo'])->name('step.two');
+    Route::post('/complete', [BookingController::class, 'completeBooking'])->name('complete');
+
+    Route::get('/success', [BookingController::class, 'success'])->name('success');
+});
 
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -38,6 +49,13 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/create', 'createOutgoing')->name('create');
             Route::post('/', 'storeOutgoing')->name('store');
             Route::delete('/{id}', 'destroyOutgoing')->name('destroy');
+        });
+
+    Route::prefix('letters/booking')
+        ->name('letters.booking.')
+        ->controller(LetterController::class)
+        ->group(function () {
+            Route::get('/', 'bookingIndex')->name('index');
         });
 
     Route::resource('employees', EmployeeController::class);

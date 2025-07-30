@@ -26,6 +26,16 @@
                             @csrf
 
                             <div class="form-group">
+                                <label for="company_id">Perusahaan</label>
+                                <select name="company_id" id="company_id" class="form-control select2" required>
+                                    <option value="">Pilih Perusahaan</option>
+                                    @foreach ($companies as $company)
+                                        <option value="{{ $company->id }}">{{ $company->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="form-group">
                                 <label for="type_id">Jenis Surat</label>
                                 <select name="type_id" id="type_id" class="form-control select2" required>
                                     <option value="">Pilih Jenis Surat</option>
@@ -78,7 +88,7 @@
                             <div class="form-group">
                                 <label for="file">Lampiran</label>
                                 <input type="file" name="file" id="file" class="form-control-file"
-                                    accept="image/*" required>
+                                    accept="image/*">
                             </div>
 
                             <button type="submit" class="btn btn-success">Simpan</button>

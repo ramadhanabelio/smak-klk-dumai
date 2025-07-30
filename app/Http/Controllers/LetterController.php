@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Type;
 use App\Models\Letter;
 use App\Models\Company;
-use App\Models\Division;
 use App\Models\Employee;
 use App\Models\Department;
 use Illuminate\Http\Request;
@@ -16,7 +16,7 @@ class LetterController extends Controller
 {
     private function toRoman($month)
     {
-        $map = [
+        $roman = [
             1 => 'I',
             2 => 'II',
             3 => 'III',
@@ -30,66 +30,87 @@ class LetterController extends Controller
             11 => 'XI',
             12 => 'XII'
         ];
-        return $map[$month] ?? '';
+        return $roman[$month] ?? '';
+    }
+
+    private function generateGlobalLetterNumber($departmentCode, $companyCode = 'CMP', $date = null)
+    {
+        $date = $date ? Carbon::parse($date) : now();
+        $year = $date->year;
+        $romanMonth = $this->toRoman($date->month);
+
+        $lastLetter = Letter::orderByDesc('created_at')
+            ->whereNotNull('letter_number')
+            ->pluck('letter_number')
+            ->first();
+
+        if ($lastLetter && preg_match('/^(\d{3})\//', $lastLetter, $matches)) {
+            $nextNumber = str_pad(((int)$matches[1]) + 1, 3, '0', STR_PAD_LEFT);
+        } else {
+            $nextNumber = '001';
+        }
+
+        return "{$nextNumber}/{$departmentCode}/{$companyCode}/DMI/{$romanMonth}/{$year}";
     }
 
     public function incomingIndex()
     {
         $letters = Letter::where('status', 'incoming')->latest()->get();
+
         return view('letters.incoming.index', compact('letters'));
     }
 
     public function createIncoming()
     {
         $types = Type::all();
+        $companies = Company::all();
         $departments = Department::with('employees')->get();
-        return view('letters.incoming.create', compact('types', 'departments'));
+
+        return view('letters.incoming.create', compact('types', 'departments', 'companies'));
     }
 
     public function storeIncoming(Request $request)
     {
         $request->validate([
-            'type_id' => 'required|exists:types,id',
-            'sender_name' => 'required|string',
-            'regarding' => 'required|string',
+            'company_id'    => 'required|exists:companies,id',
+            'type_id'       => 'required|exists:types,id',
+            'sender_name'   => 'required|string|max:255',
+            'regarding'     => 'required|string|max:255',
             'date_of_letter' => 'required|date',
-            'date_of_entry' => 'required|date|after_or_equal:date_of_letter',
+            'date_of_entry' => 'required|date',
             'department_id' => 'required|exists:departments,id',
-            'employee_id' => 'required|exists:employees,id',
-            'attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'employee_id'   => 'required|exists:employees,id',
+            'file'          => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
-        $department = Department::findOrFail($request->department_id);
-        $departmentCode = $department->code ?? 'DPT';
+        $employee = Employee::findOrFail($request->employee_id);
+        $departmentCode = $employee->department->code ?? 'DPT';
 
-        $count = Letter::where('status', 'incoming')
-            ->whereYear('date_of_letter', now()->year)
-            ->count() + 1;
+        $company = Company::findOrFail($request->company_id);
+        $companyCode = $company->code ?? 'CMP';
 
-        $number = str_pad($count, 3, '0', STR_PAD_LEFT);
-        $romanMonth = $this->toRoman(now()->month);
-        $year = now()->year;
-        $letterNumber = "{$number}/{$departmentCode}/DMI/{$romanMonth}/{$year}";
+        $letterNumber = $this->generateGlobalLetterNumber($departmentCode, $companyCode, $request->date_of_entry);
 
-        $filePath = null;
-        if ($request->hasFile('attachment')) {
-            $filePath = $request->file('attachment')->store('attachments', 'public');
+        $path = null;
+        if ($request->hasFile('file')) {
+            $path = $request->file('file')->store('attachments', 'public');
         }
 
         Letter::create([
-            'letter_number' => $letterNumber,
-            'type_id' => $request->type_id,
-            'sender_name' => $request->sender_name,
-            'regarding' => $request->regarding,
-            'date_of_letter' => $request->date_of_letter,
-            'date_of_entry' => $request->date_of_entry,
-            'department_id' => $request->department_id,
-            'employee_id' => $request->employee_id,
-            'attachment' => $filePath,
-            'status' => 'incoming',
+            'letter_number'   => $letterNumber,
+            'type_id'         => $request->type_id,
+            'sender_name'     => $request->sender_name,
+            'regarding'       => $request->regarding,
+            'date_of_letter'  => $request->date_of_letter,
+            'date_of_entry'   => $request->date_of_entry,
+            'department_id'   => $request->department_id,
+            'employee_id'     => $request->employee_id,
+            'company_id'      => $company->id,
+            'attachment'      => $path,
+            'status'          => 'incoming',
         ]);
 
-        return redirect()->route('letters.incoming.index')->with('success', 'Surat masuk berhasil disimpan.');
+        return redirect()->route('letters.incoming.index')->with('success', 'Surat masuk berhasil ditambahkan.');
     }
 
     public function destroyIncoming($id)
@@ -106,6 +127,7 @@ class LetterController extends Controller
     public function outgoingIndex()
     {
         $letters = Letter::where('status', 'outgoing')->latest()->get();
+
         return view('letters.outgoing.index', compact('letters'));
     }
 
@@ -133,18 +155,27 @@ class LetterController extends Controller
         $department = Department::findOrFail($request->department_id);
         $company = Company::findOrFail($request->company_id);
 
-        $departmentCode = $department->code;
-        $companyCode = $company->code;
+        $departmentCode = $department->code ?? 'DPT';
+        $companyCode = $company->code ?? 'CMP';
 
-        $count = Letter::where('status', 'outgoing')
-            ->whereYear('date_of_letter', now()->year)
-            ->count() + 1;
+        $date = Carbon::parse($request->date_of_letter);
+        $year = $date->year;
+        $romanMonth = $this->toRoman($date->month);
 
-        $number = str_pad($count, 3, '0', STR_PAD_LEFT);
-        $romanMonth = $this->toRoman(now()->month);
-        $year = now()->year;
+        $lastNumber = Letter::where('status', 'outgoing')
+            ->whereYear('date_of_letter', $year)
+            ->whereNotNull('letter_number')
+            ->orderByDesc('letter_number')
+            ->pluck('letter_number')
+            ->first();
 
-        $letterNumber = "{$number}/{$departmentCode}/{$companyCode}/DMI/{$romanMonth}/{$year}";
+        if ($lastNumber && preg_match('/^(\d{3})\//', $lastNumber, $matches)) {
+            $nextNumber = str_pad(((int)$matches[1]) + 1, 3, '0', STR_PAD_LEFT);
+        } else {
+            $nextNumber = '001';
+        }
+
+        $letterNumber = $this->generateGlobalLetterNumber($departmentCode, $companyCode, $request->date_of_letter);
 
         Letter::create([
             'letter_number' => $letterNumber,
@@ -167,5 +198,11 @@ class LetterController extends Controller
         $letter->delete();
 
         return redirect()->route('letters.outgoing.index')->with('success', 'Surat keluar berhasil dihapus.');
+    }
+
+    public function bookingIndex()
+    {
+        $letters = Letter::where('status', 'booking')->with('employee')->latest()->get();
+        return view('letters.booking.index', compact('letters'));
     }
 }
