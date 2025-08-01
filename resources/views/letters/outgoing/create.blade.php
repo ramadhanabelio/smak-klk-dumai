@@ -81,6 +81,11 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="purpose">Perusahaan yang dituju</label>
+                                <input type="text" name="purpose" id="purpose" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
                                 <label for="regarding">Perihal</label>
                                 <input type="text" name="regarding" id="regarding" class="form-control" required>
                             </div>

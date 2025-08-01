@@ -143,50 +143,35 @@ class LetterController extends Controller
     public function storeOutgoing(Request $request)
     {
         $request->validate([
-            'company_id' => 'required|exists:companies,id',
-            'type_id' => 'required|exists:types,id',
-            'department_id' => 'required|exists:departments,id',
-            'division_id' => 'required|exists:divisions,id',
-            'employee_id' => 'required|exists:employees,id',
-            'regarding' => 'required|string',
+            'company_id'     => 'required|exists:companies,id',
+            'type_id'        => 'required|exists:types,id',
+            'department_id'  => 'required|exists:departments,id',
+            'division_id'    => 'required|exists:divisions,id',
+            'employee_id'    => 'required|exists:employees,id',
+            'regarding'      => 'required|string',
+            'purpose'        => 'nullable|string|max:255',
             'date_of_letter' => 'required|date',
         ]);
 
         $department = Department::findOrFail($request->department_id);
-        $company = Company::findOrFail($request->company_id);
+        $company    = Company::findOrFail($request->company_id);
 
         $departmentCode = $department->code ?? 'DPT';
-        $companyCode = $company->code ?? 'CMP';
-
-        $date = Carbon::parse($request->date_of_letter);
-        $year = $date->year;
-        $romanMonth = $this->toRoman($date->month);
-
-        $lastNumber = Letter::where('status', 'outgoing')
-            ->whereYear('date_of_letter', $year)
-            ->whereNotNull('letter_number')
-            ->orderByDesc('letter_number')
-            ->pluck('letter_number')
-            ->first();
-
-        if ($lastNumber && preg_match('/^(\d{3})\//', $lastNumber, $matches)) {
-            $nextNumber = str_pad(((int)$matches[1]) + 1, 3, '0', STR_PAD_LEFT);
-        } else {
-            $nextNumber = '001';
-        }
+        $companyCode    = $company->code ?? 'CMP';
 
         $letterNumber = $this->generateGlobalLetterNumber($departmentCode, $companyCode, $request->date_of_letter);
 
         Letter::create([
-            'letter_number' => $letterNumber,
-            'company_id' => $request->company_id,
-            'type_id' => $request->type_id,
-            'department_id' => $request->department_id,
-            'division_id' => $request->division_id,
-            'employee_id' => $request->employee_id,
-            'regarding' => $request->regarding,
-            'date_of_letter' => $request->date_of_letter,
-            'status' => 'outgoing',
+            'letter_number'   => $letterNumber,
+            'company_id'      => $request->company_id,
+            'type_id'         => $request->type_id,
+            'department_id'   => $request->department_id,
+            'division_id'     => $request->division_id,
+            'employee_id'     => $request->employee_id,
+            'regarding'       => $request->regarding,
+            'purpose'         => $request->purpose,
+            'date_of_letter'  => $request->date_of_letter,
+            'status'          => 'outgoing',
         ]);
 
         return redirect()->route('letters.outgoing.index')->with('success', 'Surat keluar berhasil disimpan.');

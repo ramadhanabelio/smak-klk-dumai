@@ -19,6 +19,7 @@ class Letter extends Model
         'division_id',
         'employee_id',
         'sender_name',
+        'purpose',
         'date_of_letter',
         'date_of_entry',
         'note',

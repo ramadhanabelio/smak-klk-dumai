@@ -113,8 +113,8 @@
             <tr>
                 <th>No</th>
                 <th>Nomor Surat</th>
+                <th>Perusahaan Tujuan</th>
                 <th>Perihal</th>
-                <th>Tujuan</th>
                 <th>Tanggal Surat</th>
                 <th>Tanggal Keluar</th>
             </tr>
@@ -124,8 +124,8 @@
                 <tr>
                     <td class="center">{{ $i + 1 }}</td>
                     <td>{{ $letter->letter_number }}</td>
+                    <td>{{ $letter->purpose ?? '-' }}</td>
                     <td>{{ $letter->regarding ?? '-' }}</td>
-                    <td>{{ $letter->employee->name ?? '-' }}</td>
                     <td>{{ \Carbon\Carbon::parse($letter->date_of_letter)->format('d-m-Y') }}</td>
                     <td>{{ $letter->created_at ? \Carbon\Carbon::parse($letter->created_at)->format('d-m-Y') : '-' }}
                     </td>
