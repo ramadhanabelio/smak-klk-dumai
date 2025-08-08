@@ -45,6 +45,81 @@
                                     <td>{{ $letter->division->name ?? '-' }}</td>
                                     <td>{{ $letter->employee->name ?? '-' }}</td>
                                     <td>
+                                        <button type="button" class="btn btn-sm btn-info" data-toggle="modal"
+                                            data-target="#detailModal{{ $letter->id }}">
+                                            Detail
+                                        </button>
+
+                                        <div class="modal fade" id="detailModal{{ $letter->id }}" tabindex="-1"
+                                            role="dialog" aria-labelledby="detailModalLabel{{ $letter->id }}"
+                                            aria-hidden="true">
+                                            <div class="modal-dialog modal-lg" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title font-weight-bold"
+                                                            id="detailModalLabel{{ $letter->id }}">Detail Surat Keluar
+                                                        </h5>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Tutup">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <table class="table table-bordered">
+                                                            <tr>
+                                                                <th>Nomor Surat</th>
+                                                                <td>{{ $letter->letter_number }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Jenis Surat</th>
+                                                                <td>{{ $letter->type->name ?? '-' }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Tanggal Surat</th>
+                                                                <td>{{ \Carbon\Carbon::parse($letter->date_of_letter)->format('d M Y') }}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Departemen</th>
+                                                                <td>{{ $letter->department->name ?? '-' }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Divisi</th>
+                                                                <td>{{ $letter->division->name ?? '-' }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Pegawai</th>
+                                                                <td>{{ $letter->employee->name ?? '-' }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Perusahaan Tujuan</th>
+                                                                <td>{{ $letter->purpose }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Perihal</th>
+                                                                <td>{{ $letter->regarding }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Lampiran</th>
+                                                                <td>
+                                                                    @if ($letter->file)
+                                                                        <a href="{{ asset('storage/' . $letter->file) }}"
+                                                                            target="_blank">Lihat Lampiran</a>
+                                                                    @else
+                                                                        -
+                                                                    @endif
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Tutup</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <form action="{{ route('letters.outgoing.destroy', $letter->id) }}" method="POST"
                                             class="d-inline" onsubmit="return confirm('Yakin hapus?')">
                                             @csrf

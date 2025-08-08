@@ -31,7 +31,8 @@
 
                 <div class="form-group mt-2">
                     <label for="date_of_entry">Tanggal Booking</label>
-                    <input type="date" name="date_of_entry" id="date_of_entry" class="form-control" required>
+                    <input type="date" name="date_of_entry" id="date_of_entry" class="form-control"
+                        min="{{ now()->toDateString() }}" required>
                 </div>
 
                 <button type="submit" class="btn btn-success">Booking Sekarang</button>

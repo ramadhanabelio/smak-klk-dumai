@@ -64,32 +64,26 @@ class LetterController extends Controller
     {
         $types = Type::all();
         $companies = Company::all();
-        $departments = Department::with('employees')->get();
+        $departments = Department::all();
+        $employees = Employee::all(); // Load all employees for manual selection
 
-        return view('letters.incoming.create', compact('types', 'departments', 'companies'));
+        return view('letters.incoming.create', compact('types', 'departments', 'companies', 'employees'));
     }
 
     public function storeIncoming(Request $request)
     {
         $request->validate([
-            'company_id'    => 'required|exists:companies,id',
-            'type_id'       => 'required|exists:types,id',
-            'sender_name'   => 'required|string|max:255',
-            'regarding'     => 'required|string|max:255',
+            'letter_number'  => 'required|string|max:255|unique:letters,letter_number',
+            'company_id'     => 'required|exists:companies,id',
+            'type_id'        => 'required|exists:types,id',
+            'sender_name'    => 'required|string|max:255',
+            'regarding'      => 'required|string|max:255',
             'date_of_letter' => 'required|date',
-            'date_of_entry' => 'required|date',
-            'department_id' => 'required|exists:departments,id',
-            'employee_id'   => 'required|exists:employees,id',
-            'file'          => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'date_of_entry'  => 'required|date',
+            'department_id'  => 'required|exists:departments,id',
+            'employee_id'    => 'nullable|exists:employees,id',
+            'file'           => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
-
-        $employee = Employee::findOrFail($request->employee_id);
-        $departmentCode = $employee->department->code ?? 'DPT';
-
-        $company = Company::findOrFail($request->company_id);
-        $companyCode = $company->code ?? 'CMP';
-
-        $letterNumber = $this->generateGlobalLetterNumber($departmentCode, $companyCode, $request->date_of_entry);
 
         $path = null;
         if ($request->hasFile('file')) {
@@ -97,7 +91,7 @@ class LetterController extends Controller
         }
 
         Letter::create([
-            'letter_number'   => $letterNumber,
+            'letter_number'   => $request->letter_number,
             'type_id'         => $request->type_id,
             'sender_name'     => $request->sender_name,
             'regarding'       => $request->regarding,
@@ -105,7 +99,7 @@ class LetterController extends Controller
             'date_of_entry'   => $request->date_of_entry,
             'department_id'   => $request->department_id,
             'employee_id'     => $request->employee_id,
-            'company_id'      => $company->id,
+            'company_id'      => $request->company_id,
             'attachment'      => $path,
             'status'          => 'incoming',
         ]);

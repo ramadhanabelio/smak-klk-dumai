@@ -26,6 +26,11 @@
                             @csrf
 
                             <div class="form-group">
+                                <label for="letter_number">Nomor Surat</label>
+                                <input type="text" name="letter_number" id="letter_number" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
                                 <label for="company_id">Perusahaan</label>
                                 <select name="company_id" id="company_id" class="form-control select2" required>
                                     <option value="">Pilih Perusahaan</option>
