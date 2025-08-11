@@ -5,7 +5,7 @@
 @section('content')
     <div class="container-fluid">
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800 font-weight-bold">Pegawai</h1>
+            <h1 class="h3 text-gray-800 font-weight-bold">Pegawai</h1>
             <a href="{{ route('employees.create') }}" class="btn btn-success">Tambah Pegawai</a>
         </div>
 
