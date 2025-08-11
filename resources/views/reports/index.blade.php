@@ -30,7 +30,7 @@
                     <table class="table table-bordered" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>No</th>
+                                <th class="text-center">No.</th>
                                 <th>Nomor Surat</th>
                                 <th>Asal Surat / Pengirim</th>
                                 <th>Perihal</th>
@@ -41,7 +41,7 @@
                         <tbody>
                             @forelse($incoming as $i => $letter)
                                 <tr>
-                                    <td>{{ $i + 1 }}</td>
+                                    <td class="text-center">{{ $i + 1 }}.</td>
                                     <td>{{ $letter->letter_number }}</td>
                                     <td>{{ $letter->sender_name }}</td>
                                     <td>{{ $letter->regarding }}</td>
@@ -69,7 +69,7 @@
                     <table class="table table-bordered" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>No</th>
+                                <th class="text-center">No.</th>
                                 <th>Nomor Surat</th>
                                 <th>Perihal</th>
                                 <th>Tujuan</th>
@@ -80,7 +80,7 @@
                         <tbody>
                             @forelse($outgoing as $i => $letter)
                                 <tr>
-                                    <td>{{ $i + 1 }}</td>
+                                    <td class="text-center">{{ $i + 1 }}.</td>
                                     <td>{{ $letter->letter_number }}</td>
                                     <td>{{ $letter->regarding }}</td>
                                     <td>{{ $letter->employee->name ?? '-' }}</td>
